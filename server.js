@@ -54,6 +54,6 @@ server.use(restify.bodyParser({ mapParams: false }));
 server.post('/notifications/:notification', notify);
 
 // Start server.
-server.listen(8080, function() {
+server.listen(process.env.NOTIFY_PORT, function() {
 	console.log('%s listening at %s', server.name, server.url);
 });
