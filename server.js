@@ -1,24 +1,23 @@
 var restify = require('restify'),
 	request = require('request'),
-	baseUrl = "https://api.twilio.com/2010-04-01/",
 	account = process.env.TWILIO_ACCOUNT,
 	number = process.env.TWILIO_NUMBER,
 	token = process.env.TWILIO_TOKEN,
-	twilio = baseUrl + 'Accounts/' + account + '/Messages.json',
+	baseUrl = "https://api.twilio.com/2010-04-01/",
+	notificationUrl = baseUrl + 'Accounts/' + account + '/Messages.json',
 	notifications = {
 		"snow": "Calling all Snow Angels! Can you shovel today?"
 	};
 
 // Handle notification requests.
 function notify(req, res, next) {
-	console.log(req.params, req.body);
 
 	// For each number.
 	for(var property in req.body) {
 
 		// Standardize recipient number.  (Remove non-numbers.)  (Remove initial '1' if present.)
 		var recipient = req.body[property].replace(/[^0-9]/g, "").replace(/^1(.*)/g, "$1");
-		console.log(recipient);
+		console.log("Queueing message to " + recipient);
 
 		// Queue message.
 		request.post(
@@ -27,7 +26,7 @@ function notify(req, res, next) {
 					"user": account,
 					"pass": token
 				},
-				url: twilio,
+				url: notificationUrl,
 				form: {
 					"To": "+1" + recipient,
 					"From": number,
