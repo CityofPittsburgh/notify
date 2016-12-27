@@ -2,6 +2,7 @@ var restify = require('restify'),
 	request = require('request'),
 	baseUrl = "https://api.twilio.com/2010-04-01/",
 	account = process.env.TWILIO_ACCOUNT,
+	number = process.env.TWILIO_NUMBER,
 	token = process.env.TWILIO_TOKEN,
 	twilio = baseUrl + 'Accounts/' + account + '/Messages.json',
 	notifications = {
@@ -29,7 +30,7 @@ function notify(req, res, next) {
 				url: twilio,
 				form: {
 					"To": "+1" + recipient,
-					"From": "+14122010620",
+					"From": number,
 					"Body": notifications[req.params.notification]
 				}
 			},
