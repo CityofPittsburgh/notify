@@ -11,6 +11,10 @@ var restify = require('restify'),
 
 // Handle notification requests.
 function notify(req, res, next) {
+	if(!req.body) {
+		res.send(400);
+		next();
+	}
 
 	// For each number.
 	for(var property in req.body) {
