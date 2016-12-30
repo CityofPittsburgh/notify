@@ -14,7 +14,7 @@ module.exports = {
         TWILIO_ACCOUNT : "Paste Twilio Account SID.",
         TWILIO_TOKEN   : "Paste Twilio Auth Token.",
         NOTIFY_TOKEN   : "Do keyboard cat.",
-        NOTIFY_PORT    : 8080
+        NOTIFY_PORT    : 8081
       },
       env_production : {
         NODE_ENV: "production"
@@ -22,10 +22,19 @@ module.exports = {
     },
 
     // Second application
-    // {
-    //   name      : "WEB",
-    //   script    : "web.js"
-    // }
+    {
+      name      : "Snowtify",
+      script    : "client.js",
+      env: {
+        NOTIFY_URL   : "http://localhost:8080/notifications", // Local e.g.
+        NOTIFY_TOKEN: "Copy keyboard cat from above.",
+        SNOWTIFY_NUMBERS_PATH: "../volunteers.csv", // Local e.g.
+        SNOWTIFY_PORT    : 8080
+      },
+      env_production : {
+        NODE_ENV: "production"
+      }
+    }
   ],
 
   /**

@@ -1,12 +1,15 @@
 {
   "name": "notify-pittsburgh",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "start": "node server.js"
   },
   "description": "An SMS notification system for the City of Pittsburgh",
   "main": "server.js",
   "dependencies": {
+    "ejs": "^2.5.5",
+    "express": "^4.14.0",
+    "fast-csv": "^2.3.0",
     "request": "^2.79.0",
     "restify": "^4.3.0"
   },
@@ -15,7 +18,7 @@
     "type": "git",
     "url": "git+https://github.com/CityofPittsburgh/notify-pittsburgh.git"
   },
-  "author": "Nick Hall",
+  "author": "Nicholas Hall",
   "bugs": {
     "url": "https://github.com/CityofPittsburgh/notify-pittsburgh/issues"
   },
