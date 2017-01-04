@@ -29,7 +29,7 @@ function getNotifications(req, res, next) {
 		},
 		function(error, response, body) {
 			var notifications = JSON.parse(body).messages.map(function(notification){
-				var notificationDate = notification.body.match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/i);
+				var notificationDate = notification.body.match(/[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}/i);
 				if(notificationDate != null){
 					notification["id"] = notificationDate[0];
 					return notification;

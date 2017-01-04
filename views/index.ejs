@@ -15,6 +15,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   		<script>
 			$(function(){
+				var date = new Date(),
+					today = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
+
 				$('#snowtify').on('click', function(){
 					$('#confirm_snowtification').show().on('submit', function(e){
 						e.preventDefault();
@@ -22,7 +25,7 @@
 							<%- JSON.stringify({ numbers: numbers.map(function(number){ return number.number }) }) %>, 
 							function(response){ 
 								$('#confirm_snowtification').hide();
-								$('#notification').html('<blockquote>'+JSON.stringify(response)+'</blockquote>');
+								loadNotifications();
 							}
 						);
 					});
@@ -34,12 +37,15 @@
 
 				function loadNotifications() {
 					$.get("<%= notificationsUrl %>", function(response){
-						for(notification in response) {
-							$('#notifications').append('<li><h4>Sent '+notification+': </h4></li>');
-							response[notification].forEach(function(notificationRecipient) {
-								console.log(notificationRecipient)
-								$('#notifications li').append(notificationRecipient.to);
+						$('#notifications').html('');
+						for(notificationId in response) {
+							$('#notifications').append('<li id="'+notificationId+'"><h4>"'+response[notificationId][0].body+'"</h4><ul></ul></li>');
+							response[notificationId].forEach(function(notification) {
+								$('#notifications #'+notificationId+' ul').append($("<li>"+notification.to+"</li>"));
 							});
+							if(notificationId == today){
+								$('aside').text('A notification has been sent. (Only one can be sent per day.)');
+							}
 						}
 					});
 				} loadNotifications();
@@ -59,7 +65,7 @@
 			</ul>
 		</article>
 		<article>
-			<h3>Notification</h3
+			<h3>Notifications</h3>
 			<ul id="notifications">Loading...</ul>
 		</article>
 		<form id="confirm_snowtification" style="display:none">
