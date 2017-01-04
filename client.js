@@ -22,8 +22,9 @@ app.get('/', function(req, res){
 		res.render('index', { 
 			username: 'Nick', 
 			numbers: numbers, 
-			notifyUrl: notifyUrl + "/snow?token=" + notifyToken,
-			notificationsUrl: notifyUrl + "?token=" + notifyToken
+			notifyUrl: notifyUrl + "notifications/snow?token=" + notifyToken,
+			notificationsUrl: notifyUrl + "notifications?token=" + notifyToken,
+			messagesUrl: notifyUrl + "messages/snow"
 		});
 	});
 	

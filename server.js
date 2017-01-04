@@ -5,9 +5,18 @@ var restify = require('restify'),
 	twilioNumber = process.env.TWILIO_NUMBER,
 	twilioToken = process.env.TWILIO_TOKEN,
 	twilioUrl = "https://api.twilio.com/2010-04-01/Accounts/" + twilioAccount,
-	notifications = {
+	messages = {
 		"snow": "Calling all Snow Angels! Can you shovel today? Reply y/n."
 	};
+
+function getMessages(req, res, next) {
+	if(req.params.message == undefined) {
+		res.send(200, messages);
+	} else {
+		res.send(200, messages[req.params.message]);
+	}
+	next();
+}
 
 function getNotifications(req, res, next) {
 	request.get(
@@ -46,7 +55,7 @@ function getNotifications(req, res, next) {
 function notify(req, res, next) {
 
 	var date = new Date();
-		notification = notifications[req.params.notification] + " (Sent " + (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " by the City of Pittsburgh.)",
+		notification = messages[req.params.notification] + " (Sent " + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear() + " by the City of Pittsburgh.)",
 		numbers = req.body.numbers;
 
 	// Check input.
@@ -112,6 +121,8 @@ server.use(
 );
 
 // Set routes.
+server.get('/messages', getMessages);
+server.get('/messages/:message', getMessages);
 server.get('/notifications', getNotifications);
 // server.get('/notifications/:notification', getNotification);
 server.post('/notifications/:notification', notify);
