@@ -14,10 +14,12 @@ app.get('/', function(req, res){
 	csv
 	.fromPath(snowtifyNumbersPath, { headers:true, ignoreEmpty: true })
 	.on("data", function(data){
-		numbers.push({ 
-			name: data.Firstname + " " + data.Lastname, 
-			number: data.Phone_Number.replace(/[^0-9]/g, "").replace(/^1(.*)/g, "$1") 
-		});
+		if(data['Matched With'] != '') {
+			numbers.push({ 
+				name: data.Firstname + " " + data.Lastname, 
+				number: data.Phone_Number.replace(/[^0-9]/g, "").replace(/^1(.*)/g, "$1")
+			});
+		}
 	}).on("end", function(){
 		res.render('index', { 
 			username: 'Nick', 
