@@ -26,7 +26,7 @@ module.exports = {
       name      : "Snowtify",
       script    : "client.js",
       env: {
-        NOTIFY_URL   : "http://localhost:8080/", // Local e.g.
+        NOTIFY_URL   : "http://localhost:8081/", // Local e.g.
         NOTIFY_TOKEN: "Paste keyboard cat from above.",
         SNOWTIFY_NUMBERS_PATH: "../volunteers.csv", // Local e.g.
         SNOWTIFY_PORT    : 8080
