@@ -5,15 +5,17 @@ var restify = require('restify'),
 	twilioNumber = process.env.TWILIO_NUMBER,
 	twilioToken = process.env.TWILIO_TOKEN,
 	twilioUrl = "https://api.twilio.com/2010-04-01/Accounts/" + twilioAccount,
+	date = new Date(),
 	messages = {
-		"snow": "Calling all Snow Angels! Can you shovel today? Reply y/n."
-	};
+		"snow": "Hi Snow Angels! This is an automated reminder that snow may need shoveled today. Questions? Email SnowAngels@pittsburghpa.gov. Thanks!"
+	},
+	messagesNote = " (" + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear() + ")";
 
 function getMessages(req, res, next) {
 	if(req.params.message == undefined) {
 		res.send(200, messages);
 	} else {
-		res.send(200, messages[req.params.message]);
+		res.send(200, messages[req.params.message]) + messagesNote;
 	}
 	next();
 }
@@ -54,8 +56,7 @@ function getNotifications(req, res, next) {
 // Handle notification requests.
 function notify(req, res, next) {
 
-	var date = new Date();
-		notification = messages[req.params.notification] + " (Sent " + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear() + " by the City of Pittsburgh.)",
+	var notification = messages[req.params.notification] + messagesNote,
 		numbers = req.body.numbers;
 
 	// Check input.

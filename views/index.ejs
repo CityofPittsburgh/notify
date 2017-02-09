@@ -26,7 +26,7 @@
 					today = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
 
 				$.get("<%= messagesUrl %>", function(response){
-					$('#text_message').text('"'+response+' (Sent '+today+' by the City of Pittsburgh.)"');
+					$('#text_message').text('"'+response+'"');
 				});
 
 				$('#snowtify').on('click', function(){
