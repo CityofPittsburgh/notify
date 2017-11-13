@@ -1,23 +1,11 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Snowtifications</title>
+		<title>Send a Snow Angel Notification</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<style>
-			body { margin-top:2em; background-color:#fee; font-family:"Helvetica", "Arial", sans-serif; font-size:11pt; line-height:1.4em; }
-			h1 { line-height:1.1em; }
-			h2 { line-height:1.1em; }
-			h3 { margin-top:0; }
-			button { /*float:left;*/ margin-right:1em; font-size:1.2em; }
-			aside { line-height:1.8em; }
-			#volunteers { float:right; margin-right:2em; }
 			#confirm_snowtification { position:absolute; width:100%; height:100%; top:0; left:0; background-color:white; opacity:.95; }
-			#confirm_snowtification h2,
-			#confirm_snowtification input {  }
 			#confirm_snowtification div { width:20em; margin:10em auto; padding:1em; border:1px solid black; }
-			@media (max-width: 480px) { 
-				#volunteers { float:none; margin-right:none; }
-			}
 		</style>
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   		<script>
@@ -65,21 +53,20 @@
 		</script>
 	</head>
 	<body>
-		<h1>Snow Angel Notification</h1>
-		<button id="snowtify">Snowtify!</button>
-		<p>This will send a snow notification text message to all volunteers. Current message:</p>
+		<h1>Send a Snow Angel Notification</h1>
 		<p id="text_message">Loading...</p>
-		<!-- <aside>(You are logged in as <%= username %>.)</aside> -->
-		<article id="volunteers">
-			<h3>Volunteers</h3>
+		<article>
+			<h3>Recipients</h3>
+			<p>(This list includes volunteers listed as matched in the shared spreadsheet.)</p>
 			<ul>
 <% numbers.forEach(function(number){ %>
 				<li><%= number.number %>: <%= number.name %></li>
 <% }); %>
 			</ul>
 		</article>
-		<article>
-			<h3>Notifications</h3>
+		<button id="snowtify">Send</button>
+		<article id="volunteers">
+			<h3>Sent</h3>
 			<ul id="notifications">Loading...</ul>
 		</article>
 		<form id="confirm_snowtification" style="display:none">
