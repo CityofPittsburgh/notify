@@ -14,7 +14,7 @@ app.get('/', function(req, res){
 	csv
 	.fromPath(snowtifyNumbersPath, { headers:true, ignoreEmpty: true })
 	.on("data", function(data){
-		if(data['Matched With'] != '') {
+		if(data['Matched..Y.N.'] != '') {
 			numbers.push({ 
 				name: data.Firstname + " " + data.Lastname, 
 				number: data.Phone_Number.replace(/[^0-9]/g, "").replace(/^1(.*)/g, "$1")
