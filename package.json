@@ -2,7 +2,8 @@
   "name": "notify-pittsburgh",
   "version": "0.0.2",
   "scripts": {
-    "start": "node server.js"
+    "preinstall": "npm install pm2 -g",
+    "start": "pm2-runtime ecosystem.config.js -i max"
   },
   "description": "An SMS notification system for the City of Pittsburgh",
   "main": "server.js",
