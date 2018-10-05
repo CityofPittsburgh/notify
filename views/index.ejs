@@ -14,13 +14,13 @@
 					today = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
 
 				$.get("<%= messagesUrl %>", function(response){
-					$('#text_message').text('"'+response+'"');
+					$('#text_message').text(response);
 				});
 
 				$('#snowtify').on('click', function(){
 					$('#confirm_snowtification').show().on('submit', function(e){
 						e.preventDefault();
-						$.post("<%= notifyUrl %>", 
+						$.post("<%= snowtifyUrl %>", 
 							<%- JSON.stringify({ numbers: numbers.map(function(number){ return number.number }) }) %>, 
 							function(response){ 
 								$('#confirm_snowtification').hide();
@@ -35,11 +35,12 @@
 				});
 
 				function loadNotifications() {
-					$.get("<%= notificationsUrl %>", function(response){
+					$.get("<%= snowtificationsUrl %>", function(response){
+						var notifications = JSON.parse(response);
 						$('#notifications').html('');
-						for(notificationId in response) {
-							$('#notifications').append('<li id="'+notificationId+'"><h4>"'+response[notificationId][0].body+'"</h4><ul></ul></li>');
-							response[notificationId].forEach(function(notification) {
+						for(notificationId in notifications) {
+							$('#notifications').append('<li id="'+notificationId+'"><h4>"'+notifications[notificationId][0].body+'"</h4><ul></ul></li>');
+							notifications[notificationId].forEach(function(notification) {
 								$('#notifications #'+notificationId+' ul').append($("<li>"+notification.to+"</li>"));
 							});
 							if(notificationId == today){
@@ -48,7 +49,6 @@
 						}
 					});
 				} loadNotifications();
-
 			});
 		</script>
 	</head>

@@ -1,6 +1,6 @@
 var express = require('express'),
 	csv = require("fast-csv"),
-	notifyToken = process.env.NOTIFY_TOKEN,
+	request = require('request'),
 	notifyUrl = process.env.NOTIFY_URL,
 	snowtifyNumbersPath = process.env.SNOWTIFY_NUMBERS_PATH;
 
@@ -24,16 +24,37 @@ app.get('/', function(req, res){
 		res.render('index', { 
 			username: 'Nick', 
 			numbers: numbers, 
-			notifyUrl: notifyUrl + "notifications/snow?token=" + notifyToken,
-			notificationsUrl: notifyUrl + "notifications?token=" + notifyToken,
-			messagesUrl: notifyUrl + "messages/snow"
+			snowtifyUrl: "/snowtification",
+			snowtificationsUrl: "/snowtifications",
+			messagesUrl: "/messages"
 		});
 	});
 	
 });
 
+app.get('/snowtifications', function(req, res){
+	var notificationsUrl = notifyUrl + "/notifications";
+	request.get(
+		notificationsUrl,
+		function(error, response, body) {
+			res.status(200).send(body);
+		}
+	);
+});
+
 app.post('/snowtification', function(req, res){
 
+});
+
+app.get('/messages', function(req, res){
+	var messagesUrl = notifyUrl + "/messages/snow";
+
+	request.get(
+		messagesUrl,
+		function(error, response, body) {
+			res.status(200).send(body)
+		}
+	);
 });
 
 // Start client server.

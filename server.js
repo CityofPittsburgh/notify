@@ -113,13 +113,6 @@ function notify(req, res, next) {
 var server = restify.createServer();
 server.use(restify.bodyParser({ mapParams: false }));
 server.use(restify.queryParser({ mapParams: false }));
-server.use(
-	function crossOrigin(req,res,next){
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header("Access-Control-Allow-Headers", "X-Requested-With");
-		return next();
-	}
-);
 
 // Set routes.
 server.get('/messages', getMessages);
