@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Snow Angels Particiants</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script>
+      $(function(){
+        $('#add_participant').on('submit', function(e){
+          e.preventDefault();
+          $('input').val().forEach(function(value){ 
+            if(value == '' || value == undefined) { 
+
+            } 
+          })
+
+          $.ajax({
+            type: "POST",
+            url: "/participants",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify({
+              "Firstname":$('#Firstname').val(),
+              "Lastname":$('#Lastname').val(),
+              "Street":$('#street_number').val()+' '+$('#route').val(),
+              "City":$('#locality').val(),
+              "State":$('#administrative_area_level_1').val(),
+              "Zip":$('#postal_code').val(),
+              "Phone_Number":$('#Phone_Number').val(),
+              "Email":$('#Email').val(),
+              "type":$('input[name=type]:checked').attr('id'),
+              "matched":false
+            }),
+            success: function(response){ 
+              $('input').val('');
+              $('#added').show();
+            },
+          });
+
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <form id="add_participant" method="post">
+      <table>
+        <tr>
+          <td class="slimField">
+            <input type="radio" id="recipient" name="type"> Recipient
+            <input type="radio" id="volunteer" name="type"> Volunteer
+          </td>
+        </tr>
+        <tr>
+          <td class="label">First</td>
+          <td class="slimField"><input class="field"
+                id="Firstname" required></input></td>
+          <td class="label">Last</td>
+          <td class="slimField"><input class="field"
+                id="Lastname" required></input></td>
+        </tr>
+        <tr>
+          <td class="label">Phone</td>
+          <td class="slimField"><input class="field" id="Phone_Number" required></input></td>
+          <td class="label">Email</td>
+          <td class="slimField"><input class="field" id="Email" required></input></td>
+        </tr>
+      </table>
+
+      <div id="locationField">
+        <input id="autocomplete" placeholder="Address"
+               onFocus="geolocate()" type="text"></input>
+      </div>
+
+      <table id="address">
+        <tr>
+          <td class="label">Street address</td>
+          <td class="slimField"><input class="field" id="street_number"
+                disabled="true" required></input></td>
+          <td class="wideField" colspan="2"><input class="field" id="route"
+                disabled="true" required></input></td>
+        </tr>
+        <tr>
+          <td class="label">City</td>
+          <td class="wideField" colspan="3"><input class="field" id="locality"
+                disabled="true" required></input></td>
+        </tr>
+        <tr>
+          <td class="label">State</td>
+          <td class="slimField"><input class="field"
+                id="administrative_area_level_1" disabled="true" required></input></td>
+          <td class="label">Zip</td>
+          <td class="wideField"><input class="field" id="postal_code"
+                disabled="true" required></input></td>
+        </tr>
+        <tr>
+          <td class="wideField" colspan="3"><button class="field">Add</button></td>
+          <td class="label" id="added" style="display:none">Added</td>
+        </tr>
+      </table>
+    </form>
+    <script>
+      // This example displays an address form, using the autocomplete feature
+      // of the Google Places API to help users fill in the information.
+
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+      var placeSearch, autocomplete;
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        postal_code: 'short_name'
+      };
+
+      function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+
+        for (var component in componentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+          }
+        }
+      }
+
+      // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      function geolocate() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var geolocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var circle = new google.maps.Circle({
+              center: geolocation,
+              radius: position.coords.accuracy
+            });
+            autocomplete.setBounds(circle.getBounds());
+          });
+        }
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQuiOPnaSB9NhBkzB8yTHwhBl8-qVV9mA&libraries=places&callback=initAutocomplete" async defer></script>
+    </body>
+</html>

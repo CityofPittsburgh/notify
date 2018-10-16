@@ -8,6 +8,7 @@
   "description": "An SMS notification system for the City of Pittsburgh",
   "main": "server.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.5.5",
     "express": "^4.14.0",
     "fast-csv": "^2.3.0",

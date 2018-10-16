@@ -12,7 +12,6 @@
 			$(function(){
 				var date = new Date(),
 					today = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
-
 				$.get("<%= messagesUrl %>", function(response){
 					$('#text_message').text(response);
 				});
@@ -20,13 +19,17 @@
 				$('#snowtify').on('click', function(){
 					$('#confirm_snowtification').show().on('submit', function(e){
 						e.preventDefault();
-						$.post("<%= snowtifyUrl %>", 
-							<%- JSON.stringify({ numbers: numbers.map(function(number){ return number.number }) }) %>, 
-							function(response){ 
+						$.ajax({
+							type: "POST",
+							url: "<%= snowtifyUrl %>",
+							dataType: "json",
+							contentType: "application/json; charset=utf-8",
+							data: JSON.stringify(<%- JSON.stringify({ numbers: volunteers.map(function(volunteer){ return volunteer.Phone_Number } ) }) %>),
+							success: function(response){ 
 								$('#confirm_snowtification').hide();
 								loadNotifications();
-							}
-						);
+							},
+						});
 					});
 
 					$('#cancel_snowtification').on('click', function(){
@@ -60,8 +63,8 @@
 			<h3>Recipients</h3>
 			<p>(This list includes volunteers listed as matched in the shared spreadsheet.)</p>
 			<ul>
-<% numbers.forEach(function(number){ %>
-				<li><%= number.number %>: <%= number.name %></li>
+<% volunteers.forEach(function(volunteer){ %>
+				<li><%= volunteer.Phone_Number %>: <%= volunteer.Firstname %> <%= volunteer.Lastname %></li>
 <% }); %>
 			</ul>
 		</article>
@@ -71,7 +74,7 @@
 		</article>
 		<form id="confirm_snowtification" style="display:none">
 			<div>
-				<h2>This will send a text message to <%= numbers.length %> phone numbers.</h2>
+				<h2>This will send a text message to <%= volunteers.length %> phone numbers.</h2>
 				<input type="submit" value="Send" /> <a href="#" id="cancel_snowtification">Cancel</a>
 			</div>
 		</form>

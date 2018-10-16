@@ -1,35 +1,42 @@
 var express = require('express'),
-	csv = require("fast-csv"),
-	request = require('request'),
+	request = require('request'), 
+	bodyParser = require('body-parser'),
 	notifyUrl = process.env.NOTIFY_URL,
-	snowtifyNumbersPath = process.env.SNOWTIFY_NUMBERS_PATH;
+	notifyToken = process.env.NOTIFY_TOKEN;
 
 // Configure client server.
 var app = express();
 app.use(express.static('assets'));
+app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
-	var numbers = [];
-
-	csv
-	.fromPath(snowtifyNumbersPath, { headers:true, ignoreEmpty: true })
-	.on("data", function(data){
-		if(data['Matched..Y.N.'] != '') {
-			numbers.push({ 
-				name: data.Firstname + " " + data.Lastname, 
-				number: data.Phone_Number.replace(/[^0-9]/g, "").replace(/^1(.*)/g, "$1")
+	var snowangelsUrl = "http://webhost.pittsburghpa.gov:5984/snow-angels/_design/2018-tools/_view/volunteers";
+	request.get(
+		snowangelsUrl, 
+		function(error, response, body){
+			
+			res.render('index', {
+				volunteers: JSON.parse(body).rows.map(function(volunteer){ return volunteer.key } ).filter(function(volunteer){ return volunteer.matched }), 
+				snowtifyUrl: "/snowtification",
+				snowtificationsUrl: "/snowtifications",
+				messagesUrl: "/messages"
 			});
 		}
-	}).on("end", function(){
-		res.render('index', { 
-			username: 'Nick', 
-			numbers: numbers, 
-			snowtifyUrl: "/snowtification",
-			snowtificationsUrl: "/snowtifications",
-			messagesUrl: "/messages"
-		});
-	});
-	
+	);
+});
+
+app.get('/participants', function(req, res){
+	res.render('participants');
+});
+
+app.post('/participants', function(req, res){
+	var participantsUrl = "http://webhost.pittsburghpa.gov:5984/snow-angels/";
+	request.post(
+		{ url: participantsUrl, json: req.body },
+		function(error, response, body) {
+			res.status(200).send(body);
+		}
+	);
 });
 
 app.get('/snowtifications', function(req, res){
@@ -43,12 +50,17 @@ app.get('/snowtifications', function(req, res){
 });
 
 app.post('/snowtification', function(req, res){
-
+	var notificationUrl = notifyUrl + "/notifications/snow?token=" + notifyToken;
+	request.post(
+		{ url: notificationUrl, json: req.body },
+		function(error, response, body) {
+			res.status(200).send(body);
+		}
+	);
 });
 
 app.get('/messages', function(req, res){
 	var messagesUrl = notifyUrl + "/messages/snow";
-
 	request.get(
 		messagesUrl,
 		function(error, response, body) {
