@@ -9,12 +9,6 @@
       $(function(){
         $('#add_participant').on('submit', function(e){
           e.preventDefault();
-          $('input').val().forEach(function(value){ 
-            if(value == '' || value == undefined) { 
-
-            } 
-          })
-
           $.ajax({
             type: "POST",
             url: "/participants",
