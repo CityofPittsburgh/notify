@@ -30,11 +30,26 @@ app.get('/participants', function(req, res){
 });
 
 app.post('/participants', function(req, res){
-	var participantsUrl = "http://webhost.pittsburghpa.gov:5984/snow-angels/";
-	request.post(
-		{ url: participantsUrl, json: req.body },
+	var participantsUrl = "http://webhost.pittsburghpa.gov:5984/snow-angels/",
+		geocoderUrl = "http://gisdata.alleghenycounty.us/arcgis/rest/services/Geocoders/Composite/GeocodeServer/findAddressCandidates"+
+			"?Street="+req.body.Street+
+			"&City="+req.body.City+
+			"&State="+req.body.State+
+			"&ZIP="+req.body.Zip+
+			"&maxLocations=1&outSR=4326&f=pjson";
+
+	request.get(
+		geocoderUrl,
 		function(error, response, body) {
-			res.status(200).send(body);
+			var geocoderData = JSON.parse(body);
+			req.body['lat'] = geocoderData.candidates[0].location.y;
+			req.body['lon'] = geocoderData.candidates[0].location.x;
+			request.post(
+				{ url: participantsUrl, json: req.body },
+				function(error, response, body) {
+					res.status(200).send(body);
+				}
+			);
 		}
 	);
 });
