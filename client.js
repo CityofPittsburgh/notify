@@ -41,6 +41,7 @@ app.post('/participants', function(req, res){
 	request.get(
 		geocoderUrl,
 		function(error, response, body) {
+			if(error) { res.status(500).send('The county geocoder seems to have failed.'); }
 			var geocoderData = JSON.parse(body);
 			req.body['lat'] = geocoderData.candidates[0].location.y;
 			req.body['lon'] = geocoderData.candidates[0].location.x;

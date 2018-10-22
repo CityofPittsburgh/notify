@@ -9,13 +9,20 @@ var restify = require('restify'),
 	messages = {
 		"snow": "Hi Snow Angels! This is an automated reminder that snow may need shoveled today. Questions? Email SnowAngels@pittsburghpa.gov. Thanks!"
 	},
-	messagesNote = " (" + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear() + ")";
+
+function setReply(req, res, next) {
+	if(req.body.Body = "Y") {
+		
+	}
+	res.send(200, req.body.Body);
+	next();
+}
 
 function getMessages(req, res, next) {
 	if(req.params.message == undefined) {
 		res.send(200, messages);
 	} else {
-		res.send(200, messages[req.params.message]) + messagesNote;
+		res.send(200, messages[req.params.message]);
 	}
 	next();
 }
@@ -56,7 +63,7 @@ function getNotifications(req, res, next) {
 // Handle notification requests.
 function notify(req, res, next) {
 
-	var notification = messages[req.params.notification] + messagesNote,
+	var notification = messages[req.params.notification],
 		numbers = req.body.numbers;
 
 	// Check input.
@@ -119,7 +126,10 @@ server.get('/messages', getMessages);
 server.get('/messages/:message', getMessages);
 server.get('/notifications', getNotifications);
 // server.get('/notifications/:notification', getNotification);
-server.post('/notifications/:notification', notify);
+
+// Save notifications to db, modeling local state for replies, caching against API rate limiting and obviating need for date id.
+server.post('/notifications/:notification', notify); // Create new notification in Couch, return id and notify.
+server.post('/replies/:reply', reply); // Create new reply in notification, return id and reply.
 
 // Start server.
 server.listen(process.env.NOTIFY_PORT, function() {
