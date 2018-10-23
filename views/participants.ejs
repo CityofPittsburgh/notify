@@ -21,7 +21,7 @@
 				$('#add_participant').on('submit', function(e){
 					e.preventDefault();
 
-					$('.btn-primary').value('Adding').attr('disabled', 'true');
+					$('.btn-primary').val('Adding').attr('disabled', 'true');
 					$.ajax({
 						type: "POST",
 						url: "/participants",
@@ -41,7 +41,7 @@
 						}),
 						success: function(response){ 
 							$('input').val('');
-							$('.btn-primary').value('Add').attr('disabled', 'false');
+							$('.btn-primary').val('Add').attr('disabled', 'false');
 						},
 					});
 
