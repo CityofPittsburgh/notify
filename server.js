@@ -129,7 +129,7 @@ server.get('/notifications', getNotifications);
 
 // Save notifications to db, modeling local state for replies, caching against API rate limiting and obviating need for date id.
 server.post('/notifications/:notification', notify); // Create new notification in Couch, return id and notify.
-server.post('/replies/:reply', reply); // Create new reply in notification, return id and reply.
+// server.post('/replies/:reply', reply); // Create new reply in notification, return id and reply.
 
 // Start server.
 server.listen(process.env.NOTIFY_PORT, function() {
