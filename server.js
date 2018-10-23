@@ -8,7 +8,7 @@ var restify = require('restify'),
 	date = new Date(),
 	messages = {
 		"snow": "Hi Snow Angels! This is an automated reminder that snow may need shoveled today. Questions? Email SnowAngels@pittsburghpa.gov. Thanks!"
-	},
+	};
 
 function setReply(req, res, next) {
 	if(req.body.Body = "Y") {
