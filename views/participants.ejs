@@ -19,8 +19,7 @@
 		<script>
 			$(function(){
 				$('button').on('click', function(e){
-					$('button').val('Addind...').attr('disabled', 'false');
-
+					$('button').text('Adding').attr('disabled', 'true');
 					$.ajax({
 						type: "POST",
 						url: "/participants",
@@ -39,7 +38,7 @@
 							"matched":false
 						}),
 						success: function(response){ 
-							$('button').val('Add').attr('disabled', 'false');
+							$('button').text('Add').attr('disabled', 'false');
 							$('input').val('');
 						},
 					});
