@@ -40,7 +40,7 @@
 						}),
 						success: function(response){ 
 							$('button').val('Add').attr('disabled', 'false');
-							$('input class="form-control"').val('');
+							$('input"').val('');
 						},
 					});
 
@@ -111,7 +111,7 @@
 				// Create the autocomplete object, restricting the search to geographical
 				// location types.
 				autocomplete = new google.maps.places.Autocomplete(
-						/** @type {!HTMLInput class="form-control"Element} */(document.getElementById('autocomplete')),
+						/** @type {!HTMLInput Element} */(document.getElementById('autocomplete')),
 						{types: ['geocode']});
 
 				// When the user selects an address from the dropdown, populate the address
