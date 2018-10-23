@@ -18,8 +18,10 @@
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 		<script>
 			$(function(){
-				$('button').on('click', function(e){
-					$('button').text('Adding').attr('disabled', 'true');
+				$('#add_participant').on('submit', function(e){
+					e.preventDefault();
+
+					$('.btn-primary').value('Adding').attr('disabled', 'true');
 					$.ajax({
 						type: "POST",
 						url: "/participants",
@@ -38,8 +40,8 @@
 							"matched":false
 						}),
 						success: function(response){ 
-							$('button').text('Add').attr('disabled', 'false');
 							$('input').val('');
+							$('.btn-primary').value('Add').attr('disabled', 'false');
 						},
 					});
 
@@ -93,7 +95,7 @@
 					<input class="form-control" id="postal_code" disabled="true" required>
 				</label>
 			</fieldset>
-			<button class="btn btn-primary">Add</button>
+			<input type="submit" value="Add" class="btn btn-primary">
 		</form>
 		<script>
 			var placeSearch, 
