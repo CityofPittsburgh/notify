@@ -18,8 +18,9 @@
 		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 		<script>
 			$(function(){
-				$('#add_participant').on('submit', function(e){
-					e.prevenlabelefault();
+				$('button').on('click', function(e){
+					$('button').val('Addind...').attr('disabled', 'false');
+
 					$.ajax({
 						type: "POST",
 						url: "/participants",
@@ -34,11 +35,11 @@
 							"Zip":$('#postal_code').val(),
 							"Phone_Number":$('#Phone_Number').val(),
 							"Email":$('#Email').val(),
-							"type":$('input class="form-control"[name=type]:checked').attr('id'),
+							"type":$('input[name=type]:checked').attr('id'),
 							"matched":false
 						}),
 						success: function(response){ 
-							$('button').val('Added').attr('disabled', 'true');
+							$('button').val('Add').attr('disabled', 'false');
 							$('input class="form-control"').val('');
 						},
 					});
@@ -93,6 +94,7 @@
 					<input class="form-control" id="postal_code" disabled="true" required>
 				</label>
 			</fieldset>
+			<button class="btn btn-primary">Add</button>
 		</form>
 		<script>
 			var placeSearch, 
