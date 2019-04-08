@@ -47,8 +47,8 @@ app.post('/participants', function(req, res){
 		function(error, response, body) {
 			if(error) { res.status(500).send('The data center geocoder seems to have failed.'); }
 			var geocoderData = JSON.parse(body);
-			req.body['lat'] = geocoderData.data.geom.coordinates[0];
-			req.body['lon'] = geocoderData.data.geom.coordinates[1];
+			req.body['lat'] = geocoderData.data.geom.coordinates[1];
+			req.body['lon'] = geocoderData.data.geom.coordinates[0];
 
 			var lotareaUrl = "https://data.wprdc.org/api/3/action/datastore_search_sql?sql=SELECT%20%22LOTAREA%22,%20%22PARID%22%20FROM%20%22518b583f-7cc8-4f60-94d0-174cc98310dc%22%20WHERE%20%22PARID%22%20%3D%20%27"
 				+geocoderData.data.parcel_id+"%27";
