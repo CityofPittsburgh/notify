@@ -1,8 +1,6 @@
 var express = require('express'),
 	request = require('request'), 
 	bodyParser = require('body-parser'),
-	notifyUrl = process.env.NOTIFY_URL,
-	notifyToken = process.env.NOTIFY_TOKEN,
 	couchUrl = process.env.COUCH_URL;
 
 // Configure client server.
@@ -11,23 +9,7 @@ app.use(express.static('assets'));
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 app.get('/', function(req, res){
-	var snowangelsUrl = couchUrl + "/snow-angels/_design/2018-tools/_view/volunteers";
-	
-	request.get(
-		snowangelsUrl, 
-		function(error, response, body){
-			var volunteers = JSON.parse(body).rows.
-								map(function(volunteer){ return volunteer.key } ).
-								filter(function(volunteer){ return volunteer.matched });
-			
-			res.render('index', {
-				volunteers: volunteers, 
-				snowtifyUrl: "/snowtification",
-				snowtificationsUrl: "/snowtifications",
-				messagesUrl: "/messages"
-			});
-		}
-	);
+	res.status(404);
 });
 
 app.get('/participants', function(req, res){
@@ -69,36 +51,6 @@ app.post('/participants', function(req, res){
 					);
 				}
 			);
-		}
-	);
-});
-
-app.get('/snowtifications', function(req, res){
-	var notificationsUrl = notifyUrl + "/notifications";
-	request.get(
-		notificationsUrl,
-		function(error, response, body) {
-			res.status(200).send(body);
-		}
-	);
-});
-
-app.post('/snowtification', function(req, res){
-	var notificationUrl = notifyUrl + "/notifications/snow?token=" + notifyToken;
-	request.post(
-		{ url: notificationUrl, json: req.body },
-		function(error, response, body) {
-			res.status(200).send(body);
-		}
-	);
-});
-
-app.get('/messages', function(req, res){
-	var messagesUrl = notifyUrl + "/messages/snow";
-	request.get(
-		messagesUrl,
-		function(error, response, body) {
-			res.status(200).send(body)
 		}
 	);
 });
