@@ -46,9 +46,10 @@ app.post('/participants', function(req, res){
 					function(error, response, body) {
 						var geocoderData = JSON.parse(body);
 						console.log(geocoderData);
-						
+
 						req.body['lat'] = geocoderData.candidates[0].location.y;
 						req.body['lon'] = geocoderData.candidates[0].location.x;
+						req.body['area'] = "";
 						request.post(
 							{ url: participantsUrl, json: req.body },
 							function(error, response, body) {
