@@ -41,6 +41,7 @@
 						}),
 						success: function(response){ 
 							$('input').val('');
+							$('#Firstname').focus()
 							$('.btn-primary').val('Add').prop('disabled', false);
 						},
 					});
@@ -72,19 +73,19 @@
 			</fieldset>
 			<fieldset>
 				<label for="street_number">Number
-					<input class="form-control" id="street_number" disabled="true" required>
+					<input class="form-control" id="street_number" required>
 				</label>
 				<label for="route">Street
-					<input class="form-control" id="route" disabled="true" required>
+					<input class="form-control" id="route" required>
 				</label>
 				<label for="locality">City
-					<input class="form-control" id="locality" disabled="true" required>
+					<input class="form-control" id="locality" required>
 				</label>
 				<label for="administrative_area_level_1">State
-					<input class="form-control" id="administrative_area_level_1" disabled="true" required>
+					<input class="form-control" id="administrative_area_level_1" required>
 				</label>
 				<label for="postal_code">Zip
-					<input class="form-control" id="postal_code" disabled="true" required>
+					<input class="form-control" id="postal_code" required>
 				</label>
 			</fieldset>
 			<input type="submit" value="Add" class="btn btn-primary">
