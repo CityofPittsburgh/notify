@@ -23,12 +23,14 @@ app.post('/participants', function(req, res){
 			req.body.City+", "+
 			req.body.State+" "+
 			req.body.Zip;
+			console.log(geocoderUrl)
 
 	request.get(
 		geocoderUrl,
 		function(error, response, body) {
 			if(error) { res.status(500).send('The data center geocoder seems to have failed.'); }
 			var geocoderData = JSON.parse(body);
+			console.log(geocoderData)
 			req.body['lat'] = geocoderData.data.geom.coordinates[1];
 			req.body['lon'] = geocoderData.data.geom.coordinates[0];
 			req.body['contractor'] = "none";
